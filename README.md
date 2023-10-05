@@ -1,4 +1,4 @@
-# DomainBest
+# CDN Best IP
 
 获取最优的 [Gcore IP](https://api.gcore.com/cdn/public-ip-list) 和 [CloudFlare IP](https://www.cloudflare.com/ips/)。
 
@@ -16,5 +16,9 @@ export CLOUDFLARE_DOMAIN='cloudflare.xxx.xyz'
 python run.py
 ```
 
+**设置定时任务，每日检测最新的可用 IP**
+部署到云服务器上，使用 crontab 定时执行，参考相关脚本 [cron](cron)。
+
 ## 使用
-依赖 `CloudFlare` 提供的 `DNS` 服务，将使用对应的 `CDN` 服务的域名，`CNAME` 至上述设定的域名（`GCORE_DOMAIN`, `CLOUDFLARE_DOMAIN`）。
+依赖 `CloudFlare` 提供的 `DNS` 服务。   
+将使用对应的 `CDN` 服务的域名，`CNAME` 至上述设定的域名（`GCORE_DOMAIN`, `CLOUDFLARE_DOMAIN`）。
