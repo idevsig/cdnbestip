@@ -1,15 +1,26 @@
+#!/usr/bin/env python3
+# _*_ coding:utf-8 _*_
 import os
 import gcore
 import cloudflare
-import notify
+from notify import send
+
+"""
+File: run.py(最优CDN域名IP更新)
+Author: Jetsung
+cron: 0 7 * * *
+new Env('最优CDN域名IP更新');
+Update: 2023/10/21
+"""
 
 if __name__ == '__main__':
     if os.environ.get('CLOUDFLARE_TOKEN'):
         # 更新 gcore ip
         if os.environ.get('GCORE_DOMAIN'):
             ip = gcore.run()
-            notify.Notify('Gcore Update', 'Gcore DNS IP: {}'.format(ip), 'daily').send()
+            send('Gcore Update', f'Gcore DNS IP: {ip}')
+
         # 更新 cloudflare ip
         if os.environ.get('CLOUDFLARE_DOMAIN'):
             ip = cloudflare.run()
-            notify.Notify('CloudFlare Update', 'CloudFlare DNS IP: {}'.format(ip), 'daily').send()
+            send('CloudFlare Update', f'CloudFlare DNS IP: {ip}')

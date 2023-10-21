@@ -2,11 +2,14 @@
 
 set -e
 
+# shellcheck disable=SC1091
 . ./include/cdnbestip.sh
 
 LOG_PATH="./cronday.log"
-echo >>$LOG_PATH
-date >>$LOG_PATH
+{
+  echo
+  date
+} >>$LOG_PATH
 
 cdnbestip >>$LOG_PATH
 
