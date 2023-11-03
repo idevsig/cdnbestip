@@ -10,9 +10,15 @@ export BARK_TOKEN=''
 # Chanify 通知环境变量 https://github.com/chanify/chanify
 export CHANIFY_TOKEN=''
 
+# CloudFlare Token https://www.cloudflare.com/
 export CLOUDFLARE_TOKEN=''
+
+export GCORE_VALID_SKIP='true' # 设置此值时，若 GCORE_DOMAIN 可访问，则不重新获取IP
 export GCORE_DOMAIN='gcore.xxx.xyz'
+
+export CLOUDFLARE_VALID_SKIP='true' # 设置此值时，若 CLOUDFLARE_DOMAIN 可访问，则不重新获取IP
 export CLOUDFLARE_DOMAIN='cloudflare.xxx.xyz'
+export CLOUDFLARE_RANDOM_NUM=2 # 每个IP段随机取几个数值，不设置则默认3
 ```
 
 ## 2. 使用
@@ -44,8 +50,8 @@ python run.py
 3.  相关命令查看 **[官方教程](https://github.com/whyour/qinglong#%E5%86%85%E7%BD%AE%E5%91%BD%E4%BB%A4)**。
 
     ```bash
-    ql repo https://github.com/devdoz/cdnbestip.git run '' 'notify.py|dns_cf|cloudflare|gcore' main
+    ql repo https://github.com/devdoz/cdnbestip.git 'run' '' 'check|dns_cf|cloudflare|gcore' main
 
     # 或（不建议部署至海外平台，否则不确定该 IP 对国内有效）
-    ql repo https://github.com/devdoz/cdnbestip.git run '' 'notify.py|dns_cf|cloudflare|gcore' main
+    ql repo https://github.com/devdoz/cdnbestip.git 'run' '' 'check|dns_cf|cloudflare|gcore' main
     ```
