@@ -50,8 +50,8 @@ python run.py
 3.  相关命令查看 **[官方教程](https://github.com/whyour/qinglong#%E5%86%85%E7%BD%AE%E5%91%BD%E4%BB%A4)**。
 
     ```bash
-    ql repo https://github.com/devdoz/cdnbestip.git 'cloudflare|gcore' 'run' 'check|dns_cf' main
+    ql repo https://github.com/devdoz/cdnbestip.git 'run' '' 'cloudflare|gcore|check|dns_cf' main
 
     # 或（不建议部署至海外平台，否则不确定该 IP 对国内有效）
-    ql repo https://github.com/devdoz/cdnbestip.git 'cloudflare|gcore' 'run' 'check|dns_cf' main
+    ql repo https://github.com/devdoz/cdnbestip.git 'run' '' 'cloudflare|gcore|check|dns_cf' main
     ```
