@@ -158,8 +158,11 @@ class Check:
                 # ip_pattern = r'\b(?:\d{1,3}\.){3}\d{1,3}\b'
                 match = re.search(ip_pattern, resp.stdout)
                 if match:
-                    return match.group()
-                return domain
+                    old_ip = match.group()
+                    result = self.ping(old_ip)
+                    print(f'result: {result.stdout}')
+                    if result.returncode == 0:
+                        return old_ip
         except Exception as e:
             print(f'err {e}')
             pass
