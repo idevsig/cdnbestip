@@ -1,0 +1,22 @@
+[project]
+name = "cdnbestip"
+version = ""
+description = ""
+authors = [
+    {name = "Jetsung Chan", email = "jetsungchan@gmail.com"},
+]
+dependencies = [
+    "requests",
+    "cloudflare",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "NONE"}
+
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pdm.scripts]
+start = {cmd = "python run.py"}
