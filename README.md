@@ -45,7 +45,7 @@ python run.py
 
 ## 支持[青龙面板](https://github.com/whyour/qinglong)
 
-1.  `依赖管理` -> `Python` -> 添加依赖 `cloudflare`, `Pillow==9.5.0`。
+1.  `依赖管理` -> `Python` -> 添加依赖 `cloudflare`。
 2.  `依赖管理` -> `Linux` -> 添加依赖 `iputils-ping`（`debian` 镜像）。
 3.  相关命令查看 **[官方教程](https://github.com/whyour/qinglong#%E5%86%85%E7%BD%AE%E5%91%BD%E4%BB%A4)**。
 
