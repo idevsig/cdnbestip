@@ -90,7 +90,7 @@ def run():
                 return old_ip
 
         # 从环境变量中读取 CLOUDFLARE_RANDOM_NUM
-        cloudflare_random_num_str = os.environ.get('CLOUDFLARE_RANDOM_NUM', '0')
+        cloudflare_random_num_str = os.environ.get('CLOUDFLARE_RANDOM_NUM', '3')
         try:
             cloudflare_random_num = int(cloudflare_random_num_str)
         except ValueError:

@@ -1,2 +1,3 @@
 requests
 cloudflare
+Pillow==9.5.0
