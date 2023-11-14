@@ -23,18 +23,27 @@ export CLOUDFLARE_RANDOM_NUM=2 # 每个IP段随机取几个数值，不设置则
 
 ## 2. 使用
 
+- **pip**
+
 ```bash
 pip install -r requirements.txt
 python run.py
 ```
 
+- **pdm**
+
+```bash
+pdm install
+pdm run start
+```
+
 **注意：**
 
-1. 依赖系统的 `ping` 命令。
+1. 依赖系统的 `ping`,`dig` 命令。
 
    ```bash
    # Debian 系
-   apt install iputils-ping
+   apt install iputils-ping dnsutils
    ```
 
 2. 依赖 `CloudFlare` 提供的 `DNS` 服务。
@@ -46,12 +55,12 @@ python run.py
 ## 支持[青龙面板](https://github.com/whyour/qinglong)
 
 1.  `依赖管理` -> `Python` -> 添加依赖 `cloudflare`。
-2.  `依赖管理` -> `Linux` -> 添加依赖 `iputils-ping`（`debian` 镜像）。
+2.  `依赖管理` -> `Linux` -> 添加依赖 `iputils-ping`,`dnsutils`（`debian` 镜像）。
 3.  相关命令查看 **[官方教程](https://github.com/whyour/qinglong#%E5%86%85%E7%BD%AE%E5%91%BD%E4%BB%A4)**。
 
     ```bash
-    ql repo https://jihulab.com/devdo/cdnbestip.git 'run' '' 'cloudflare|gcore|check|dns_cf' main
+    ql repo https://jihulab.com/devdo/cdnbestip.git run "" "cloudflare|gcore|check|dns_cf" main
 
     # 或（不建议部署至海外平台，否则不确定该 IP 对国内有效）
-    ql repo https://github.com/devdoz/cdnbestip.git 'run' '' 'cloudflare|gcore|check|dns_cf' main
+    ql repo https://github.com/devdoz/cdnbestip.git run "" "cloudflare|gcore|check|dns_cf" main
     ```
