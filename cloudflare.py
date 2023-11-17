@@ -75,12 +75,12 @@ def ip_from_string():
 def run():
     try:
         # 从环境变量中读取 CLOUDFLARE_DOMAIN, CLOUDFLARE_TOKEN
-        domain = os.environ.get('CLOUDFLARE_DOMAIN')
         token = os.environ.get('CLOUDFLARE_TOKEN')
-
         skip = os.environ.get('CLOUDFLARE_VALID_SKIP')
+        domain = os.environ.get('CLOUDFLARE_DOMAIN')
+        check_domain = os.environ.get('CLOUDFLARE_CHECK_DOMAIN', 'www.cloudflare.com')
 
-        check = Check()
+        check = Check(check_domain, 'http')
 
         # 源IP有效开关
         if skip:
@@ -90,7 +90,7 @@ def run():
                 return old_ip
 
         # 从环境变量中读取 CLOUDFLARE_RANDOM_NUM
-        cloudflare_random_num_str = os.environ.get('CLOUDFLARE_RANDOM_NUM', '3')
+        cloudflare_random_num_str = os.environ.get('CLOUDFLARE_RANDOM_NUM', '50')
         try:
             cloudflare_random_num = int(cloudflare_random_num_str)
         except ValueError:

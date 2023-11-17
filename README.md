@@ -9,16 +9,23 @@
 export BARK_TOKEN=''
 # Chanify 通知环境变量 https://github.com/chanify/chanify
 export CHANIFY_TOKEN=''
+# Lark 通知环境变量 https://open.larksuite.com/document/client-docs/bot-v3/add-custom-bot#756b882f
+export LARK_TOKEN=''
+# FeiShu 通知环境变量 https://open.feishu.cn/document/client-docs/bot-v3/add-custom-bot#756b882f
+export FEISHU_TOKEN=''
 
 # CloudFlare Token https://www.cloudflare.com/
 export CLOUDFLARE_TOKEN=''
+
+# 防墙，从源站获取 IP 列表
+export SOURCE_CDN=''
 
 export GCORE_VALID_SKIP='true' # 设置此值时，若 GCORE_DOMAIN 可访问，则不重新获取IP
 export GCORE_DOMAIN='gcore.xxx.xyz'
 
 export CLOUDFLARE_VALID_SKIP='true' # 设置此值时，若 CLOUDFLARE_DOMAIN 可访问，则不重新获取IP
 export CLOUDFLARE_DOMAIN='cloudflare.xxx.xyz'
-export CLOUDFLARE_RANDOM_NUM=2 # 每个IP段随机取几个数值，不设置则默认3
+export CLOUDFLARE_RANDOM_NUM=50 # 每个段随机取几个数值，不设置则默认50
 ```
 
 ## 2. 使用
