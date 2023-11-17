@@ -13,7 +13,7 @@ def fetch(cdn=''):
     '''
     cdn = '' if not cdn else cdn.rstrip('/') + '/'
     ip_url = '{}https://api.gcore.com/cdn/public-ip-list'.format(cdn)
-    print(ip_url)
+    # print(ip_url)
     response = requests.get(ip_url, timeout=5)
     if response.status_code != 200:
         raise ValueError(f'status code {response.status_code}')
