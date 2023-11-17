@@ -2,10 +2,62 @@ import multiprocessing
 import platform
 import re
 import subprocess
+import requests
 
 
 class Check:
+    def __init__(self, domain, scheme='https') -> None:
+        self.domain = domain
+        self.scheme = 'http' if scheme == 'http' else 'https'
+
+    def curl(self, ip_address, timeout=5):
+        """
+        判断是否可以访问指定的网址
+        Check if a website is accessible by sending a HEAD request to the specified IP address.
+
+        Parameters:
+            ip_address (str): The IP address of the website.
+            timeout (int, optional): The timeout for the request in seconds. Defaults to 5.
+
+        Returns:
+            bool: True if the website is accessible, False otherwise.
+        """
+
+        try:
+            url = "{}://{}".format(self.scheme, ip_address)
+            headers = {"Host": self.domain}    
+            # print(url)        
+            response = requests.head(url, headers=headers, allow_redirects=True, verify=False, timeout=timeout)
+            if response.status_code == 200:
+                # print("网站可访问！")
+                return True
+            # else:
+                # print(f"无法访问，状态码: {response.status_code}")
+
+        except requests.RequestException as e:
+            # print(f"发生错误: {e}")
+            pass
+        return False
+
     def dig(self, domain):
+        """
+        根据域名通过 dig 命令获取正确的 IP
+        Executes a ping or nslookup command based on the operating system to retrieve information about a domain.
+
+        Args:
+            domain (str): The domain to perform the command on.
+
+        Returns:
+            CompletedProcess: An object representing the completed process including the command's exit code, output, and error.
+
+        Raises:
+            subprocess.CalledProcessError: If the command fails or times out.
+
+        Example:
+            >>> dig('example.com')
+            CompletedProcess(args=['nslookup', 'example.com'], returncode=0, stdout=b'...', stderr=b'...')
+        """
+
         # 根据操作系统选择正确的 ping 命令
         if platform.system() == 'Windows':
             cmd = ['nslookup', domain]
@@ -55,6 +107,9 @@ class Check:
             if result.returncode == 0:
                 rtt = -1  # 无法解析响应时间
 
+                if not self.curl(ip_address, timeout=3):
+                    return False
+            
                 # 解析 ping 结果以获取响应时间（具体解析方法可能因操作系统而异）
                 if platform.system() == 'Windows':
                     rtt_line = [line for line in result.stdout.splitlines() if 'Average =' in line]
@@ -159,9 +214,7 @@ class Check:
                 match = re.search(ip_pattern, resp.stdout)
                 if match:
                     old_ip = match.group()
-                    result = self.ping(old_ip)
-                    print(f'result: {result.stdout}')
-                    if result.returncode == 0:
+                    if self.curl(old_ip, timeout=3):
                         return old_ip
         except Exception as e:
             print(f'err {e}')

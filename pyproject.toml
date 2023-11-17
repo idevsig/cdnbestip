@@ -1,6 +1,6 @@
 [project]
 name = "cdnbestip"
-version = ""
+version = "0.0.1"
 description = ""
 authors = [
     {name = "Jetsung Chan", email = "jetsungchan@gmail.com"},

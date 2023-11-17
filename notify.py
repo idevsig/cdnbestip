@@ -31,7 +31,7 @@ def bark(title, content, config):
         print('发送通知时出错:', str(e))
 
 
-def chanify(title, content, config):
+def chanify(content, config):
     """
     Send a notification using Chanify API.
     https://github.com/chanify/chanify
@@ -53,12 +53,66 @@ def chanify(title, content, config):
     except Exception as e:
         print('发送通知时出错:', str(e))
 
+def feishu(content, config):
+    """
+    Send a notification using Feishu API.
+    https://open.feishu.cn/document/client-docs/bot-v3/add-custom-bot#756b882f
+    """
+    if not config.get("token"):
+        return
+    serv_url = 'https://open.feishu.cn' if not config.get("url") else config.get("url")
+    url = f'{serv_url}/open-apis/bot/v2/hook/{config.get("token")}'
+    data = {
+        "msg_type": "text",
+        "content": {
+            "text": content
+        }
+    }
 
-def notify(title, content, method, config):
-    if method == 'bark':
+    try:
+        response = requests.post(
+            url=url, data=json.dumps(data))
+        if response.status_code == 200:
+            print('飞书推送成功')
+        else:
+            print('飞书推送失败')
+    except Exception as e:
+        print('发送通知时出错:', str(e))
+
+def lark(content, config):
+    """
+    Send a notification using Lark API.
+    https://open.larksuite.com/document/client-docs/bot-v3/add-custom-bot#756b882f
+    """
+    if not config.get("token"):
+        return
+    serv_url = 'https://open.larksuite.com' if not config.get("url") else config.get("url")
+    url = f'{serv_url}/open-apis/bot/v2/hook/{config.get("token")}'
+    data = {
+        "msg_type": "text",
+        "content": {
+            "text": content
+        }
+    }
+    try:
+        response = requests.post(
+            url=url, data=json.dumps(data))
+        if response.status_code == 200:
+            print('Lark 推送成功')
+        else:
+            print('Lark 推送失败')
+    except Exception as e:
+        print('发送通知时出错:', str(e))
+
+def notify(title, content, provider, config):
+    if provider == 'bark':
         bark(title, content, config)
-    elif method == 'chanify':
-        chanify(title, content, config)
+    elif provider == 'chanify':
+        chanify(content, config)
+    elif provider == 'lark':
+        lark(content, config)
+    elif provider == 'feishu':
+        feishu(content, config)
 
 
 def load_config():
@@ -73,15 +127,23 @@ def load_config():
             "url": os.getenv("CHANIFY_URL"),
             "token": os.getenv('CHANIFY_TOKEN'),
         }
+    if os.getenv("LARK_TOKEN"):
+        push_config['lark'] = {
+            "token": os.getenv('LARK_TOKEN'),
+        }    
+    if os.getenv("FEISHU_TOKEN"):
+        push_config['feishu'] = {
+            "token": os.getenv('FEISHU_TOKEN'),
+        }                
     return push_config
 
 
 def send(title, content):
     push_config = load_config()
     threads = []
-    for method, config in push_config.items():
+    for provider, config in push_config.items():
         if config:
-            thread = threading.Thread(target=notify, args=(title, content, method, config))
+            thread = threading.Thread(target=notify, args=(title, content, provider, config))
             threads.append(thread)
             thread.start()
 

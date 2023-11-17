@@ -1,18 +1,20 @@
-import multiprocessing
-import re
 import requests
 import os
 from check import Check
 
 from dns_cf import main as cf_refresh
 
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-def fetch():
+def fetch(cdn=''):
     '''
     拉取数据并转为迭代器
     '''
-    ip_url = 'https://api.gcore.com/cdn/public-ip-list'
-    response = requests.get(ip_url)
+    cdn = '' if not cdn else cdn.rstrip('/') + '/'
+    ip_url = '{}https://api.gcore.com/cdn/public-ip-list'.format(cdn)
+    print(ip_url)
+    response = requests.get(ip_url, timeout=5)
     if response.status_code != 200:
         raise ValueError(f'status code {response.status_code}')
     resp = response.json()
@@ -22,11 +24,13 @@ def fetch():
 def run():
     try:
         # 从环境变量中读取 GCORE_DOMAIN, CLOUDFLARE_TOKEN
+        source_cdn = os.environ.get('SOURCE_CDN', '')
         token = os.environ.get('CLOUDFLARE_TOKEN')
-        domain = os.environ.get('GCORE_DOMAIN')
         skip = os.environ.get('GCORE_VALID_SKIP')
+        domain = os.environ.get('GCORE_DOMAIN')
+        check_domain = os.environ.get('GCORE_CHECK_DOMAIN', 'gcore.com')
 
-        check = Check()
+        check = Check(check_domain)
 
         # 源IP有效开关
         if skip:
@@ -35,7 +39,7 @@ def run():
             if old_ip:
                 return old_ip
 
-        ip_list = fetch()
+        ip_list = fetch(source_cdn)
         print(f'ip count: {len(ip_list)}')
         # ip_list = ip_list[-1:]
         # print(ip_list)
