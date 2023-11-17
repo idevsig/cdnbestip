@@ -8,12 +8,13 @@ from check import Check
 from dns_cf import main as cf_refresh
 
 
-def ip_from_fetch():
+def ip_from_fetch(cdn=''):
     '''
     从 url 文件中读取 IP 段
     https://www.cloudflare.com/ips/
     '''
-    ip_url = 'https://www.cloudflare.com/ips-v4'
+    cdn = '' if not cdn else cdn.rstrip('/') + '/'
+    ip_url = '{}.https://www.cloudflare.com/ips-v4'.format(cdn)
     response = requests.get(ip_url)
     if response.status_code != 200:
         raise ValueError(f'status code {response.status_code}')
@@ -75,6 +76,7 @@ def ip_from_string():
 def run():
     try:
         # 从环境变量中读取 CLOUDFLARE_DOMAIN, CLOUDFLARE_TOKEN
+        source_cdn = os.environ.get('SOURCE_CDN', '')
         token = os.environ.get('CLOUDFLARE_TOKEN')
         skip = os.environ.get('CLOUDFLARE_VALID_SKIP')
         domain = os.environ.get('CLOUDFLARE_DOMAIN')
@@ -98,7 +100,7 @@ def run():
             # print("CLOUDFLARE_RANDOM_NUM 不是有效的整数，将使用默认值 0。")
             cloudflare_random_num = 3  # 默认值或其他处理方式
 
-        ip_ranges = ip_from_fetch()
+        ip_ranges = ip_from_fetch(source_cdn)
         # ip_ranges = ip_from_file()
         # ip_ranges = ip_from_string()
 
